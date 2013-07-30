@@ -34,9 +34,13 @@
 
 import re
 import copy
+from urlparse import urlparse
 
 import rosgraph.impl.graph
 import roslib
+
+#debug
+from pprint import pprint
 
 # node/node connectivity
 NODE_NODE_GRAPH = 'node_node'
@@ -71,6 +75,12 @@ class RosGraphDotcodeGenerator:
     def __init__(self):
         pass
 
+    def _generate_node_label(self, rosgraphinst, node):
+        if not node in rosgraphinst.node_uri_map.keys():
+            return node
+        uri = urlparse(rosgraphinst.node_uri_map[node])
+        return "%s (%s, %s)" % (node, uri.hostname, uri.port)
+    
     def _add_edge(self, edge, dotcode_factory, dotgraph, is_topic=False):
         if is_topic:
             dotcode_factory.add_edge_to_graph(dotgraph, edge.start, edge.end, label=edge.label, url='topic:%s' % edge.label)
@@ -97,6 +107,7 @@ class RosGraphDotcodeGenerator:
         else:
             dotcode_factory.add_node_to_graph(dotgraph,
                                               nodename=node,
+                                              nodelabel=self._generate_node_label(rosgraphinst, node),
                                               shape='ellipse',
                                               url=node)
 
@@ -147,6 +158,15 @@ class RosGraphDotcodeGenerator:
             namespaces.extend([roslib.names.namespace(n[1:]) for n in nt_nodes])
 
         return list(set(namespaces))
+
+    def generate_hosts(self, rosgraphinst, quiet = False):
+        """
+        Determine the hostnames of the nodes being displayed
+        """
+        nodes = rosgraphinst.nn_nodes
+        if quiet:
+            nodes = [n for n in nodes if not n in QUIET_NAMES]
+        return list(set(urlparse(rosgraphinst.node_uri_map[n]).hostname for n in nodes))
 
     def _filter_orphaned_edges(self, edges, nodes):
         nodenames = [str(n).strip() for n in nodes]
@@ -371,6 +391,20 @@ class RosGraphDotcodeGenerator:
                     self._add_node(n, rosgraphinst=rosgraphinst, dotcode_factory=dotcode_factory, dotgraph=namespace_clusters[namespace], quiet=quiet)
                 else:
                     self._add_node(n, rosgraphinst=rosgraphinst, dotcode_factory=dotcode_factory, dotgraph=dotgraph, quiet=quiet)
+
+        # Cluster nodes based on hostnames
+        host_clusters = {}
+        if cluster_namespaces_level == 0:
+            hosts = self.generate_hosts(rosgraphinst=rosgraphinst, quiet=quiet)
+            for host in hosts:
+                host_clusters[host] = dotcode_factory.add_subgraph_to_graph(dotgraph, host, rank=rank, rankdir = orientation, simplify = simplify)
+                self._add_topic_node(n, dotcode_factory=dotcode_factory, dotgraph=dotgraph, quiet=quiet)
+            if nn_nodes is not None:
+                for n in nn_nodes:
+                    host = urlparse(rosgraphinst.node_uri_map[n]).hostname
+                    self._add_node(n, rosgraphinst=rosgraphinst, dotcode_factory=dotcode_factory, dotgraph=host_clusters[host], quiet=quiet)
+
+                
 
         for e in edges:
             self._add_edge(e, dotcode_factory, dotgraph=dotgraph, is_topic=(graph_mode == NODE_NODE_GRAPH))
