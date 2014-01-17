@@ -2,6 +2,23 @@
 Changelog for package rqt_image_view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.3 (2014-01-08)
+------------------
+* add groups for rqt plugins, renamed some plugins (`#167 <https://github.com/ros-visualization/rqt_common_plugins/issues/167>`_)
+* properly handle aligned images
+* wrap cv calls in try-catch-block (`#201 <https://github.com/ros-visualization/rqt_common_plugins/issues/201>`_)
+
+0.3.2 (2013-10-14)
+------------------
+
+0.3.1 (2013-10-09)
+------------------
+* fix event handling for rqt_image_view enabling to run multiple instances simultaneously (`#66 <https://github.com/ros-visualization/rqt_common_plugins/issues/66>`_)
+* add rqt_image_view to global bin (`#168 <https://github.com/ros-visualization/rqt_common_plugins/issues/168>`_)
+
+0.3.0 (2013-08-28)
+------------------
+
 0.2.17 (2013-07-04)
 -------------------
 

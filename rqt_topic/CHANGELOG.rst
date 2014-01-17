@@ -2,6 +2,23 @@
 Changelog for package rqt_topic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.3 (2014-01-08)
+------------------
+* add groups for rqt plugins, renamed some plugins (`#167 <https://github.com/ros-visualization/rqt_common_plugins/issues/167>`_)
+* catch and show exceptions `#198 <https://github.com/ros-visualization/rqt_common_plugins/issues/198>`_
+
+0.3.2 (2013-10-14)
+------------------
+
+0.3.1 (2013-10-09)
+------------------
+* improve rqt_topic initialization time (`#62 <https://github.com/ros-visualization/rqt_common_plugins/issues/62>`_)
+* modified toggling topics to use checkbox instead of context menu (`#75 <https://github.com/ros-visualization/rqt_common_plugins/issues/75>`_)
+
+0.3.0 (2013-08-28)
+------------------
+* fix cleaning old data in rqt_topic (fix `#74 <https://github.com/ros-visualization/rqt_common_plugins/issues/74>`_)
+
 0.2.17 (2013-07-04)
 -------------------
 

@@ -88,6 +88,7 @@ class PlotWidget(QWidget):
 
         self.data_plot = data_plot
         self.data_plot_layout.addWidget(self.data_plot)
+        self.data_plot.autoscroll(self.autoscroll_checkbox.isChecked())
 
         # setup drag 'n drop
         self.data_plot.dropEvent = self.dropEvent
@@ -146,12 +147,21 @@ class PlotWidget(QWidget):
         self.subscribe_topic_button.setToolTip(message)
 
     @Slot()
+    def on_topic_edit_returnPressed(self):
+        if self.subscribe_topic_button.isEnabled():
+            self.add_topic(str(self.topic_edit.text()))
+
+    @Slot()
     def on_subscribe_topic_button_clicked(self):
         self.add_topic(str(self.topic_edit.text()))
 
     @Slot(bool)
     def on_pause_button_clicked(self, checked):
         self.enable_timer(not checked)
+
+    @Slot(bool)
+    def on_autoscroll_checkbox_clicked(self, checked):
+        self.data_plot.autoscroll(checked)
 
     @Slot()
     def on_clear_button_clicked(self):
@@ -191,10 +201,14 @@ class PlotWidget(QWidget):
             return
 
         self._rosdata[topic_name] = ROSData(topic_name, self._start_time)
-        data_x, data_y = self._rosdata[topic_name].next()
-        self.data_plot.add_curve(topic_name, topic_name, data_x, data_y)
+        if self._rosdata[topic_name].error is not None:
+            qWarning(str(self._rosdata[topic_name].error))
+            del self._rosdata[topic_name]
+        else:
+            data_x, data_y = self._rosdata[topic_name].next()
+            self.data_plot.add_curve(topic_name, topic_name, data_x, data_y)
 
-        self._subscribed_topics_changed()
+            self._subscribed_topics_changed()
 
     def remove_topic(self, topic_name):
         self._rosdata[topic_name].close()

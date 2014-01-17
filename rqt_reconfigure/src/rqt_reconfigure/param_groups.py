@@ -56,10 +56,10 @@ _GROUP_TYPES = {
 
 
 def find_cfg(config, name):
-    """
+    '''
     (Ze'ev) reaaaaallly cryptic function which returns the config object for
     specified group.
-    """
+    '''
     cfg = None
     for k, v in config.items():
         try:
@@ -81,21 +81,21 @@ def find_cfg(config, name):
 
 
 class GroupWidget(QWidget):
-    """
+    '''
     (Isaac's guess as of 12/13/2012)
     This class bonds multiple Editor instances that are associated with
     a single node as a group.
-    """
+    '''
 
     # public signal
     sig_node_disabled_selected = Signal(str)
 
     def __init__(self, updater, config, nodename):
-        """
+        '''
         :param config:
         :type config: Dictionary? defined in dynamic_reconfigure.client.Client
         :type nodename: str
-        """
+        '''
 
         #TODO figure out what data type 'config' is. It is afterall returned
         #     from dynamic_reconfigure.client.get_parameter_descriptions()
@@ -107,7 +107,6 @@ class GroupWidget(QWidget):
         self._toplevel_treenode_name = nodename
 
         # TODO: .ui file needs to be back into usage in later phase.
-#        rp = rospkg.RosPack()
 #        ui_file = os.path.join(rp.get_path('rqt_reconfigure'),
 #                               'resource', 'singlenode_parameditor.ui')
 #        loadUi(ui_file, self)
@@ -123,7 +122,7 @@ class GroupWidget(QWidget):
         font.setBold(True)
 
         # Button to close a node.
-        _icon_disable_node = QIcon.fromTheme('emblem-unreadable')
+        _icon_disable_node = QIcon.fromTheme('window-close')
         _bt_disable_node = QPushButton(_icon_disable_node, '', self)
         _bt_disable_node.setToolTip('Hide this node')
         _bt_disable_node_size = QSize(36, 24)
@@ -139,7 +138,7 @@ class GroupWidget(QWidget):
         grid_widget = QWidget(self)
         self.grid = QFormLayout(grid_widget)
         verticalLayout.addWidget(_widget_nodeheader)
-        verticalLayout.addWidget(grid_widget)
+        verticalLayout.addWidget(grid_widget, 1)
         # Again, these UI operation above needs to happen in .ui file.
 
         self.tab_bar = None  # Every group can have one tab bar
@@ -163,9 +162,9 @@ class GroupWidget(QWidget):
         pass
 
     def _create_node_widgets(self, config):
-        """
+        '''
         :type config: Dict?
-        """
+        '''
         i_debug = 0
         for param in config['parameters']:
             begin = time.time() * 1000
@@ -233,9 +232,9 @@ class GroupWidget(QWidget):
             w.close()
 
     def get_treenode_names(self):
-        """
+        '''
         :rtype: str[]
-        """
+        '''
         return self._param_names
 
     def _node_disable_bt_clicked(self):

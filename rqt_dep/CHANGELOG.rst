@@ -2,6 +2,22 @@
 Changelog for package rqt_dep
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.3 (2014-01-08)
+------------------
+* add groups for rqt plugins, renamed some plugins (`#167 <https://github.com/ros-visualization/rqt_common_plugins/issues/167>`_)
+* make it a non ros plugin startable without a roscore (`#200 <https://github.com/ros-visualization/rqt_common_plugins/issues/200>`_)
+
+0.3.2 (2013-10-14)
+------------------
+
+0.3.1 (2013-10-09)
+------------------
+
+0.3.0 (2013-08-28)
+------------------
+* add partial support for metapackages
+* fix rendering of icons on OS X (`ros-visualization/rqt#83 <https://github.com/ros-visualization/rqt/issues/83>`_)
+
 0.2.17 (2013-07-04)
 -------------------
 * fix handling ResourceNotFound for not found packages in graph

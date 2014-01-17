@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ServiceCaller</string>
+   <string>Service Caller</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1">
    <item>
@@ -23,6 +23,12 @@
        </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -59,6 +65,12 @@
        </property>
        <property name="text">
         <string>Call</string>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
        </property>
       </widget>
      </item>

@@ -60,8 +60,8 @@ class PublisherWidget(QWidget):
         self._topic_dict = {}
         self._update_thread = WorkerThread(self._update_thread_run, self._update_finished)
 
-        rp = rospkg.RosPack()
-        ui_file = os.path.join(rp.get_path('rqt_publisher'), 'resource', 'Publisher.ui')
+        self._rospack = rospkg.RosPack()
+        ui_file = os.path.join(self._rospack.get_path('rqt_publisher'), 'resource', 'Publisher.ui')
         loadUi(ui_file, self, {'ExtendedComboBox': ExtendedComboBox, 'PublisherTreeWidget': PublisherTreeWidget})
         self.refresh_button.setIcon(QIcon.fromTheme('view-refresh'))
         self.refresh_button.clicked.connect(self.refresh_combo_boxes)
@@ -95,13 +95,12 @@ class PublisherWidget(QWidget):
         message_type_names = []
         try:
             # this only works on fuerte and up
-            rospack = rospkg.RosPack()
-            packages = sorted([pkg_tuple[0] for pkg_tuple in rosmsg.iterate_packages(rospack, rosmsg.MODE_MSG)])
+            packages = sorted([pkg_tuple[0] for pkg_tuple in rosmsg.iterate_packages(self._rospack, rosmsg.MODE_MSG)])
         except:
             # this works up to electric
             packages = sorted(rosmsg.list_packages())
         for package in packages:
-            for base_type_str in rosmsg.list_msgs(package):
+            for base_type_str in rosmsg.list_msgs(package, rospack=self._rospack):
                 message_class = roslib.message.get_message_class(base_type_str)
                 if message_class is not None:
                     message_type_names.append(base_type_str)
