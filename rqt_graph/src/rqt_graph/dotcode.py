@@ -80,7 +80,7 @@ class RosGraphDotcodeGenerator:
             return node
         uri = urlparse(rosgraphinst.node_uri_map[node])
         return "%s (%s, %s)" % (node, uri.hostname, uri.port)
-    
+
     def _add_edge(self, edge, dotcode_factory, dotgraph, is_topic=False):
         if is_topic:
             dotcode_factory.add_edge_to_graph(dotgraph, edge.start, edge.end, label=edge.label, url='topic:%s' % edge.label)
@@ -398,13 +398,14 @@ class RosGraphDotcodeGenerator:
             hosts = self.generate_hosts(rosgraphinst=rosgraphinst, quiet=quiet)
             for host in hosts:
                 host_clusters[host] = dotcode_factory.add_subgraph_to_graph(dotgraph, host, rank=rank, rankdir = orientation, simplify = simplify)
-                self._add_topic_node(n, dotcode_factory=dotcode_factory, dotgraph=dotgraph, quiet=quiet)
+                #self._add_topic_node(n, dotcode_factory=dotcode_factory, dotgraph=dotgraph, quiet=quiet)
+            print nn_nodes
             if nn_nodes is not None:
                 for n in nn_nodes:
                     host = urlparse(rosgraphinst.node_uri_map[n]).hostname
                     self._add_node(n, rosgraphinst=rosgraphinst, dotcode_factory=dotcode_factory, dotgraph=host_clusters[host], quiet=quiet)
 
-                
+
 
         for e in edges:
             self._add_edge(e, dotcode_factory, dotgraph=dotgraph, is_topic=(graph_mode == NODE_NODE_GRAPH))
